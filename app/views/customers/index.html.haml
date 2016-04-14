@@ -1,0 +1,29 @@
+%article{'ng-app' => 'customers', 'ng-controller' => 'CustomerSearchController'}
+  %header
+    %h1.h2 Customer Search
+
+  %section.search-form
+    %form
+      %label.sr-only{for:'search.keywords'} Keywords
+      %input{type:'text',
+             name:'keywords',
+             class: 'form-control input-lg',
+             placeholder: 'First Name, Last Name, or Email Address',
+             'ng-change'=>'search(keywords)',
+             'ng-model'=>'keywords'}
+    %h1.searchedFor{'ng-if'=>'searchedFor'}
+      %small Searched for:
+      {{searchedFor}}
+  %section.search-results{'ng-if'=>'customers.length > 0'}
+    %header
+      %h1.h3 Results
+    %ol.list-group
+      %li.list-group-item.clearfix{'ng-repeat'=>'customer in customers'}
+        %h3.pull-right
+          %small.text-uppercase Joined
+          {{customer.created_at | date}}
+        %h2.h3
+          {{customer.first_name}} {{customer.last_name}}
+          %small {{customer.username}}
+        %h4 {{customer.email}}
+    = render partial: 'pager', locals:{ keywords: @keywords, page: @page }
